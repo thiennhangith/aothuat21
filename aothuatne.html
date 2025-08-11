@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FFD700">
+    <title>Trò Ảo Thuật 21 Biểu Tượng - Tối Ưu Hiệu Suất</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gold: #FFD700;
+            --secondary-gold: #FFA500;
+            --royal-purple: #6B46C1;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+            /* Performance: Force hardware acceleration */
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        /* Simplified background - no heavy effects */
+        .bg-simple {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-gradient);
+            z-index: -1;
+        }
+
+        /* Ultra-light particle system */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary-gold);
+            border-radius: 50%;
+            opacity: 0.6;
+            /* Use only transform and opacity for hardware acceleration */
+            will-change: transform, opacity;
+            animation: particleMove 8s linear infinite;
+        }
+
+        @keyframes particleMove {
+            0% { 
+                transform: translateY(100vh) translateX(0px);
+                opacity: 0;
+            }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { 
+                transform: translateY(-10vh) translateX(20px);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(15px, 4vw, 25px);
+            position: relative;
+        }
+
+        /* Simplified header */
+        .header {
+            text-align: center;
+            margin-bottom: clamp(25px, 5vw, 40px);
+        }
+
+        .main-title {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 700;
+            color: var(--primary-gold);
+            margin-bottom: 15px;
+            /* Simple text shadow instead of complex gradients */
+            text-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: 400;
+            margin-bottom: 20px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Simplified step info card */
+        .step-info {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            border-radius: clamp(15px, 3vw, 20px);
+            padding: clamp(20px, 4vw, 30px);
+            margin-bottom: clamp(25px, 5vw, 35px);
+            border: 1px solid var(--glass-border);
+            /* Minimal box shadow */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .step-title {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--primary-gold);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--warning-orange);
+            border-radius: clamp(10px, 2vw, 15px);
+            padding: clamp(15px, 3vw, 20px);
+            margin: clamp(15px, 3vw, 20px) 0;
+        }
+
+        .warning-title {
+            font-weight: 700;
+            color: var(--warning-orange);
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Optimized symbol cards - minimal effects */
+        .symbol-card {
+            width: clamp(60px, 12vw, 80px);
+            height: clamp(60px, 12vw, 80px);
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-radius: clamp(12px, 3vw, 18px);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            position: relative;
+            display: inline-block;
+            margin: clamp(4px, 1.5vw, 8px);
+            cursor: pointer;
+            /* Only use transform and opacity for animations */
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            /* Force hardware acceleration */
+            will-change: transform;
+            backface-visibility: hidden;
+        }
+
+        .symbol-card:hover {
+            transform: translateY(-4px) scale(1.02);
+        }
+
+        .symbol-card:active {
+            transform: translateY(-2px) scale(0.98);
+            transition: transform 0.1s ease;
+        }
+
+        /* Simplified category colors - no gradients */
+        .symbol-card.type-animal {
+            background: #FFF8DC;
+            color: #8B4513;
+        }
+
+        .symbol-card.type-nature {
+            background: #F0FFF0;
+            color: #228B22;
+        }
+
+        .symbol-card.type-cosmic {
+            background: #191970;
+            color: #FFD700;
+        }
+
+        .symbol-card.type-food {
+            background: #FFE4E1;
+            color: #DC143C;
+        }
+
+        .symbol-card.type-object {
+            background: #E6E6FA;
+            color: #800080;
+        }
+
+        .symbol-card.type-weather {
+            background: #F0F8FF;
+            color: #4682B4;
+        }
+
+        .symbol-card.type-transport {
+            background: #FFF5EE;
+            color: #FF4500;
+        }
+
+        /* Simplified grid */
+        .initial-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(clamp(70px, 14vw, 90px), 1fr));
+            gap: clamp(8px, 2vw, 15px);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: clamp(20px, 4vw, 30px);
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            border-radius: clamp(15px, 3vw, 25px);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Simplified piles */
+        .cards-display {
+            display: flex;
+            justify-content: center;
+            gap: clamp(15px, 4vw, 30px);
+            margin: clamp(25px, 5vw, 40px) 0;
+            flex-wrap: wrap;
+        }
+
+        .card-pile {
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            border-radius: clamp(15px, 3vw, 20px);
+            padding: clamp(15px, 3vw, 25px);
+            min-width: clamp(250px, 40vw, 320px);
+            max-width: 380px;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            position: relative;
+            flex: 1;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            will-change: transform;
+        }
+
+        .card-pile:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 215, 0, 0.4);
+        }
+
+        .card-pile.selected {
+            background: rgba(255, 215, 0, 0.15);
+            border: 2px solid var(--primary-gold);
+            transform: translateY(-3px);
+        }
+
+        .card-pile.selected::after {
+            content: '✨ ĐÃ CHỌN ✨';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-gold);
+            color: #1a1a1a;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+            white-space: nowrap;
+        }
+
+        .pile-title {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            font-weight: 700;
+            color: var(--primary-gold);
+            margin-bottom: clamp(15px, 3vw, 20px);
+            text-align: center;
+        }
+
+        .pile-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: clamp(6px, 1.5vw, 10px);
+        }
+
+        /* Simplified buttons */
+        .btn {
+            background: linear-gradient(145deg, var(--primary-gold), var(--secondary-gold));
+            border: none;
+            padding: clamp(12px, 3vw, 18px) clamp(24px, 5vw, 40px);
+            border-radius: 25px;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            font-weight: 700;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin: clamp(8px, 2vw, 15px);
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            will-change: transform;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            transition: transform 0.1s ease;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            background: #666;
+        }
+
+        .btn:focus {
+            outline: 2px solid rgba(255, 215, 0, 0.5);
+            outline-offset: 2px;
+        }
+
+        /* Simplified magic reveal */
+        .magic-reveal {
+            text-align: center;
+            padding: clamp(40px, 6vw, 60px) clamp(20px, 4vw, 40px);
+            background: rgba(255, 215, 0, 0.05);
+            border-radius: clamp(20px, 4vw, 30px);
+            margin: clamp(30px, 6vw, 50px) 0;
+        }
+
+        .magic-title {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--primary-gold);
+            margin-bottom: clamp(25px, 4vw, 35px);
+            font-weight: 700;
+        }
+
+        /* Simple loading animation */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(8px, 2vw, 12px);
+            margin: clamp(20px, 4vw, 30px) 0;
+        }
+
+        .loading-orb {
+            width: clamp(12px, 3vw, 18px);
+            height: clamp(12px, 3vw, 18px);
+            border-radius: 50%;
+            background: var(--primary-gold);
+            animation: simplePulse 1.5s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        .loading-orb:nth-child(2) { animation-delay: 0.2s; }
+        .loading-orb:nth-child(3) { animation-delay: 0.4s; }
+        .loading-orb:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes simplePulse {
+            0%, 100% { transform: scale(0.7); opacity: 0.5; }
+            50% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Simplified final reveal */
+        .final-reveal {
+            text-align: center;
+            padding: clamp(30px, 6vw, 50px);
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            border-radius: clamp(20px, 4vw, 30px);
+            border: 2px solid var(--primary-gold);
+            position: relative;
+        }
+
+        .reveal-title {
+            font-size: clamp(1.4rem, 4vw, 2.2rem);
+            color: var(--primary-gold);
+            margin-bottom: clamp(30px, 5vw, 40px);
+            font-weight: 700;
+        }
+
+        .revealed-symbol {
+            width: clamp(100px, 25vw, 150px);
+            height: clamp(100px, 25vw, 150px);
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            border-radius: clamp(20px, 5vw, 30px);
+            border: clamp(3px, 1vw, 5px) solid var(--primary-gold);
+            margin: clamp(20px, 4vw, 30px) auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(3rem, 10vw, 4.5rem);
+            animation: simpleReveal 1s ease-out;
+            will-change: transform;
+        }
+
+        @keyframes simpleReveal {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.5); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
+
+        /* Performance settings panel */
+        .performance-panel {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .performance-panel.show {
+            display: block;
+        }
+
+        .performance-setting {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .performance-setting input {
+            margin: 0;
+        }
+
+        /* Debug panel - simplified */
+        .debug-panel {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.9);
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 11px;
+            z-index: 1000;
+            display: none;
+            max-width: 250px;
+        }
+
+        .debug-panel.show {
+            display: block;
+        }
+
+        .debug-line {
+            margin: 3px 0;
+        }
+
+        .debug-label {
+            color: var(--primary-gold);
+            font-weight: bold;
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: simpleFadeIn 0.5s ease-out;
+        }
+
+        @keyframes simpleFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .particle {
+                display: none;
+            }
+        }
+
+        /* Mobile optimizations */
+        @media screen and (max-width: 767px) {
+            .cards-display {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .card-pile {
+                width: 100%;
+                max-width: 350px;
+            }
+            
+            .initial-cards {
+                grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
+                gap: 6px;
+                padding: 15px;
+            }
+        }
+
+        /* Very small screens */
+        @media screen and (max-width: 375px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .card-pile {
+                min-width: 280px;
+                padding: 12px;
+            }
+            
+            .initial-cards {
+                grid-template-columns: repeat(auto-fit, minmax(55px, 1fr));
+                gap: 4px;
+                padding: 10px;
+            }
+        }
+
+        /* Low-end device detection styles */
+        .low-performance .particle {
+            display: none;
+        }
+
+        .low-performance .step-info,
+        .low-performance .card-pile,
+        .low-performance .initial-cards,
+        .low-performance .final-reveal {
+            backdrop-filter: none;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .low-performance .symbol-card:hover {
+            transform: none;
+        }
+
+        .low-performance .card-pile:hover {
+            transform: none;
+        }
+
+        .low-performance .btn:hover {
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Simplified background -->
+    <div class="bg-simple"></div>
+    
+    <!-- Minimal particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Performance settings panel -->
+    <div class="performance-panel" id="performance-panel">
+        <div style="font-weight: bold; margin-bottom: 8px;">⚙️ Cài Đặt Hiệu Suất</div>
+        <div class="performance-setting">
+            <input type="checkbox" id="disable-particles" onchange="toggleParticles()">
+            <label for="disable-particles">Tắt hiệu ứng hạt</label>
+        </div>
+        <div class="performance-setting">
+            <input type="checkbox" id="disable-animations" onchange="toggleAnimations()">
+            <label for="disable-animations">Tắt hoạt ảnh</label>
+        </div>
+        <div class="performance-setting">
+            <input type="checkbox" id="low-quality" onchange="toggleLowQuality()">
+            <label for="low-quality">Chế độ hiệu suất cao</label>
+        </div>
+    </div>
+    
+    <!-- Debug panel -->
+    <div class="debug-panel" id="debug-panel">
+        <div class="debug-line"><span class="debug-label">FPS:</span> <span id="fps-counter">60</span></div>
+        <div class="debug-line"><span class="debug-label">Device:</span> <span id="device-info">Unknown</span></div>
+        <div class="debug-line"><span class="debug-label">Memory:</span> <span id="memory-info">Unknown</span></div>
+        <div class="debug-line"><span class="debug-label">Round:</span> <span id="debug-round">0</span></div>
+        <div class="debug-line"><span class="debug-label">Selected:</span> <span id="debug-selected">[]</span></div>
+        <div class="debug-line"><span class="debug-label">Magic:</span> <span id="debug-magic">10</span></div>
+    </div>
+    
+    <div class="container">
+        <header class="header">
+            <h1 class="main-title">✨ MYSTICAL SYMBOL MAGIC ✨</h1>
+            <p class="subtitle">Trải nghiệm phép màu đọc vị tâm trí được tối ưu cho mọi thiết bị</p>
+            <button onclick="togglePerformancePanel()" 
+                    style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; font-size: 11px; cursor: pointer; padding: 6px 12px; border-radius: 15px; margin: 5px;">
+                ⚙️ Hiệu Suất</button>
+            <button onclick="toggleDebug()" 
+                    style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; font-size: 11px; cursor: pointer; padding: 6px 12px; border-radius: 15px; margin: 5px;">
+                🐛 Debug</button>
+        </header>
+
+        <section id="step-info" class="step-info fade-in" role="main" aria-live="polite">
+            <h2 class="step-title">🎯 Bước 1: Chọn Biểu Tượng Bí Mật Trong Tâm Trí</h2>
+            <div class="step-description">
+                <p>Nhìn vào 21 biểu tượng dưới đây và <strong>chỉ ghi nhớ MỘT BIỂU TƯỢNG trong tâm trí</strong> của bạn. 
+                Hãy chọn một biểu tượng mà bạn thực sự ấn tượng và <strong>tuyệt đối không được click chọn!</strong></p>
+                
+                <div class="warning-box" role="alert">
+                    <div class="warning-title">⚠️ LƯU Ý CỰC KỲ QUAN TRỌNG</div>
+                    <p><strong>KHÔNG ĐƯỢC CLICK VÀO BIỂU TƯỢNG!</strong><br>
+                    Chỉ nhìn, ghi nhớ trong đầu, sau đó bấm nút "Bắt Đầu Phép Màu".<br>
+                    Việc click sẽ làm hỏng phép màu! 🎭</p>
+                </div>
+                
+                <p>💫 <em>Khi đã chọn xong biểu tượng trong tâm trí, hãy bấm nút bên dưới để bắt đầu phép màu...</em></p>
+            </div>
+        </section>
+
+        <div id="initial-cards" class="initial-cards" role="presentation"></div>
+
+        <section id="piles-container" class="hidden" role="main">
+            <div class="cards-display" id="piles-display"></div>
+        </section>
+
+        <section id="magic-reveal" class="magic-reveal hidden" role="main">
+            <h2 class="magic-title">🔮 Đang Đọc Vị Tâm Trí Bạn... 🔮</h2>
+            <div class="loading-container">
+                <div class="loading-orb"></div>
+                <div class="loading-orb"></div>
+                <div class="loading-orb"></div>
+                <div class="loading-orb"></div>
+            </div>
+            <p>Những biểu tượng thần bí đang thì thầm bí mật trong tâm trí bạn...</p>
+        </section>
+
+        <section id="final-reveal" class="final-reveal hidden" role="main">
+            <h2 class="reveal-title">🌟 Biểu Tượng Trong Tâm Trí Bạn Là:</h2>
+            <div id="revealed-symbol" class="revealed-symbol"></div>
+            <p><strong>✨ Phép màu đã hoàn thành hoàn hảo! ✨</strong><br>
+            <em>Tôi đã đọc được chính xác suy nghĩ của bạn!</em></p>
+            <button class="btn" onclick="restartGame()">🎲 Thử Phép Màu Mới</button>
+        </section>
+
+        <div style="text-align: center; margin: clamp(25px, 5vw, 40px) 0;">
+            <button id="start-btn" class="btn" onclick="startGame()">🚀 Bắt Đầu Phép Màu</button>
+            <button id="next-btn" class="btn hidden" onclick="nextRound()" disabled>➡️ Tiếp Theo</button>
+            <button id="reveal-btn" class="btn hidden" onclick="performMagic()">✨ Tiết Lộ Phép Màu!</button>
+        </div>
+    </div>
+
+    <script>
+        // Performance-Optimized Magic Trick
+        class OptimizedMagicTrick {
+            constructor() {
+                this.cards = [];
+                this.currentRound = 0;
+                this.selectedPiles = [];
+                this.isAnimating = false;
+                this.DEBUG = false;
+                this.currentLogicalPiles = null;
+                this.isLowPerformance = false;
+                this.animationsDisabled = false;
+                this.particlesDisabled = false;
+                
+                // Enhanced symbol categories
+                this.symbolCategories = {
+                    animals: ['🦁', '🦅', '🐺', '🦋', '🐸', '🐯', '🦊'],
+                    nature: ['🌸', '🌙', '⭐', '🌈', '🍀', '🌺', '🌿'],
+                    cosmic: ['🔮', '💎', '⚡', '🌟', '✨', '💫', '🌀'],
+                    food: ['🍎', '🍓', '🥕', '🌽', '🍄', '🍊', '🥝'],
+                    objects: ['🎪', '🎭', '🎨', '🏆', '🎯', '🎪', '🎸'],
+                    weather: ['☀️', '❄️', '🌊', '🔥', '💨', '⛈️', '🌤️'],
+                    transport: ['🚀', '⛵', '🎈', '🏰', '🎡', '✈️', '🚁']
+                };
+                
+                this.init();
+            }
+
+            init() {
+                this.detectPerformance();
+                this.setupFPSMonitor();
+                this.generateCards();
+                this.displayInitialCards();
+                this.createOptimizedParticles();
+                this.addEventListeners();
+                this.updateDebugPanel();
+            }
+
+            detectPerformance() {
+                // Detect low-end devices
+                const memory = navigator.deviceMemory || 4;
+                const cores = navigator.hardwareConcurrency || 4;
+                const connection = navigator.connection;
+                const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+                const screenSize = window.screen.width * window.screen.height;
+                
+                // Performance scoring
+                let performanceScore = 100;
+                
+                if (memory < 4) performanceScore -= 30;
+                if (cores < 4) performanceScore -= 20;
+                if (isMobile) performanceScore -= 15;
+                if (screenSize < 800 * 600) performanceScore -= 10;
+                if (connection && connection.effectiveType === '2g') performanceScore -= 25;
+                
+                // Check for reduced motion preference
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    performanceScore = 0;
+                    this.animationsDisabled = true;
+                    this.particlesDisabled = true;
+                }
+                
+                this.isLowPerformance = performanceScore < 60;
+                
+                if (this.isLowPerformance) {
+                    document.body.classList.add('low-performance');
+                    this.particlesDisabled = true;
+                }
+                
+                // Update debug info
+                document.getElementById('device-info').textContent = isMobile ? 'Mobile' : 'Desktop';
+                document.getElementById('memory-info').textContent = memory ? `${memory}GB` : 'Unknown';
+            }
+
+            setupFPSMonitor() {
+                let lastTime = performance.now();
+                let frameCount = 0;
+                let fps = 60;
+                
+                const updateFPS = (currentTime) => {
+                    frameCount++;
+                    if (currentTime - lastTime >= 1000) {
+                        fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+                        document.getElementById('fps-counter').textContent = fps;
+                        frameCount = 0;
+                        lastTime = currentTime;
+                        
+                        // Auto-adjust performance based on FPS
+                        if (fps < 30 && !this.isLowPerformance) {
+                            this.enablePerformanceMode();
+                        }
+                    }
+                    requestAnimationFrame(updateFPS);
+                };
+                
+                requestAnimationFrame(updateFPS);
+            }
+
+            enablePerformanceMode() {
+                this.isLowPerformance = true;
+                this.particlesDisabled = true;
+                document.body.classList.add('low-performance');
+                this.createOptimizedParticles(); // Recreate with fewer particles
+                this.showNotification('Đã tự động chuyển sang chế độ hiệu suất cao do FPS thấp', 'info');
+            }
+
+            createOptimizedParticles() {
+                const particlesContainer = document.getElementById('particles');
+                particlesContainer.innerHTML = '';
+                
+                if (this.particlesDisabled || this.animationsDisabled) {
+                    return;
+                }
+                
+                // Dramatically reduce particle count based on device
+                let particleCount;
+                if (this.isLowPerformance) {
+                    particleCount = 3; // Ultra minimal for low-end devices
+                } else if (/Mobi|Android/i.test(navigator.userAgent)) {
+                    particleCount = 5; // Few particles for mobile
+                } else {
+                    particleCount = 8; // Moderate for desktop
+                }
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 8 + 's';
+                    particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                    particlesContainer.appendChild(particle);
+                }
+            }
+
+            generateCards() {
+                this.cards = [];
+                const categories = Object.keys(this.symbolCategories);
+                
+                for (let i = 0; i < 21; i++) {
+                    const categoryIndex = i % categories.length;
+                    const category = categories[categoryIndex];
+                    const categorySymbols = this.symbolCategories[category];
+                    const symbolInCategory = Math.floor(i / categories.length) % categorySymbols.length;
+                    
+                    this.cards.push({
+                        symbol: categorySymbols[symbolInCategory],
+                        category: category,
+                        id: i,
+                        logicalPosition: i
+                    });
+                }
+            }
+
+            createSymbolElement(symbol, index = 0) {
+                const symbolElement = document.createElement('div');
+                symbolElement.className = `symbol-card type-${symbol.category}`;
+                
+                // Add fade-in only if animations are enabled
+                if (!this.animationsDisabled) {
+                    symbolElement.classList.add('fade-in');
+                    symbolElement.style.animationDelay = `${index * 0.03}s`;
+                }
+                
+                symbolElement.textContent = symbol.symbol;
+                symbolElement.setAttribute('data-symbol-id', symbol.id);
+                symbolElement.setAttribute('aria-label', `Biểu tượng ${symbol.symbol}`);
+                
+                return symbolElement;
+            }
+
+            displayInitialCards() {
+                const container = document.getElementById('initial-cards');
+                container.innerHTML = '';
+                
+                const displayCards = [...this.cards];
+                this.shuffleArray(displayCards);
+                
+                displayCards.forEach((symbol, index) => {
+                    const symbolElement = this.createSymbolElement(symbol, index);
+                    container.appendChild(symbolElement);
+                });
+            }
+
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            startGame() {
+                if (this.isAnimating) return;
+                this.isAnimating = true;
+
+                document.getElementById('start-btn').classList.add('hidden');
+                document.getElementById('next-btn').classList.remove('hidden');
+                
+                this.updateStepInfo(
+                    `🎯 Bước ${2 + this.currentRound}: Tìm Biểu Tượng Của Bạn`,
+                    `Quan sát 3 cọc biểu tượng và <strong>CLICK VÀO CỌC</strong> có chứa biểu tượng bạn đã ghi nhớ. 
+                    <strong>(Lần ${this.currentRound + 1}/3)</strong>`
+                );
+                
+                setTimeout(() => {
+                    this.dividIntoThreePiles();
+                    document.getElementById('initial-cards').classList.add('hidden');
+                    document.getElementById('piles-container').classList.remove('hidden');
+                    this.isAnimating = false;
+                }, this.animationsDisabled ? 0 : 300);
+            }
+
+            dividIntoThreePiles() {
+                const logicalPiles = [[], [], []];
+                
+                this.cards.forEach((card, index) => {
+                    logicalPiles[index % 3].push(card);
+                });
+                
+                const displayPiles = logicalPiles.map(pile => {
+                    const shuffledPile = [...pile];
+                    this.shuffleArray(shuffledPile);
+                    return shuffledPile;
+                });
+                
+                this.displayPiles(displayPiles);
+                this.currentLogicalPiles = logicalPiles;
+                this.updateDebugPanel();
+            }
+
+            displayPiles(piles) {
+                const container = document.getElementById('piles-display');
+                container.innerHTML = '';
+                
+                piles.forEach((pile, pileIndex) => {
+                    const pileElement = document.createElement('div');
+                    pileElement.className = 'card-pile';
+                    
+                    if (!this.animationsDisabled) {
+                        pileElement.classList.add('fade-in');
+                        pileElement.style.animationDelay = `${pileIndex * 0.1}s`;
+                    }
+                    
+                    pileElement.onclick = () => this.selectPile(pileIndex);
+                    pileElement.setAttribute('role', 'button');
+                    pileElement.setAttribute('tabindex', '0');
+                    pileElement.setAttribute('aria-label', `Cọc ${pileIndex + 1}`);
+                    
+                    const titleElement = document.createElement('div');
+                    titleElement.className = 'pile-title';
+                    titleElement.textContent = `✨ Cọc ${['Thứ Nhất', 'Thứ Hai', 'Thứ Ba'][pileIndex]} ✨`;
+                    pileElement.appendChild(titleElement);
+                    
+                    const symbolsContainer = document.createElement('div');
+                    symbolsContainer.className = 'pile-cards';
+                    
+                    pile.forEach((symbol, symbolIndex) => {
+                        const symbolElement = this.createSymbolElement(symbol, symbolIndex);
+                        symbolsContainer.appendChild(symbolElement);
+                    });
+                    
+                    pileElement.appendChild(symbolsContainer);
+                    container.appendChild(pileElement);
+                });
+            }
+
+            selectPile(pileIndex) {
+                if (this.isAnimating) return;
+                
+                document.querySelectorAll('.card-pile').forEach(pile => {
+                    pile.classList.remove('selected');
+                    pile.setAttribute('aria-selected', 'false');
+                });
+                
+                const selectedPile = document.querySelectorAll('.card-pile')[pileIndex];
+                selectedPile.classList.add('selected');
+                selectedPile.setAttribute('aria-selected', 'true');
+                this.selectedPiles[this.currentRound] = pileIndex;
+                
+                const nextBtn = document.getElementById('next-btn');
+                nextBtn.disabled = false;
+                nextBtn.textContent = this.currentRound < 2 ? '➡️ Tiếp Theo' : '🔮 Chuẩn Bị Phép Màu';
+                
+                // Haptic feedback
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(30);
+                }
+                
+                this.updateDebugPanel();
+            }
+
+            nextRound() {
+                if (this.selectedPiles[this.currentRound] === undefined) {
+                    this.showNotification('Vui lòng chọn một cọc trước!', 'warning');
+                    return;
+                }
+                
+                if (this.isAnimating) return;
+                this.isAnimating = true;
+
+                const selectedPileIndex = this.selectedPiles[this.currentRound];
+                const newOrder = [];
+                
+                const nonSelectedPiles = [];
+                for (let i = 0; i < 3; i++) {
+                    if (i !== selectedPileIndex) {
+                        nonSelectedPiles.push(i);
+                    }
+                }
+                
+                newOrder.push(...this.currentLogicalPiles[nonSelectedPiles[0]]);
+                newOrder.push(...this.currentLogicalPiles[selectedPileIndex]);
+                newOrder.push(...this.currentLogicalPiles[nonSelectedPiles[1]]);
+                
+                this.cards = newOrder;
+                this.currentRound++;
+                
+                setTimeout(() => {
+                    if (this.currentRound < 3) {
+                        this.updateStepInfo(
+                            `🎯 Bước ${2 + this.currentRound}: Tìm Biểu Tượng Của Bạn`,
+                            `Tuyệt vời! Hãy tìm cọc có chứa biểu tượng của bạn. 
+                            <strong>(Lần ${this.currentRound + 1}/3)</strong>`
+                        );
+                        
+                        this.dividIntoThreePiles();
+                        document.getElementById('next-btn').disabled = true;
+                    } else {
+                        this.prepareReveal();
+                    }
+                    this.isAnimating = false;
+                    this.updateDebugPanel();
+                }, this.animationsDisabled ? 0 : 400);
+            }
+
+            prepareReveal() {
+                document.getElementById('next-btn').classList.add('hidden');
+                document.getElementById('reveal-btn').classList.remove('hidden');
+                document.getElementById('piles-container').classList.add('hidden');
+                
+                this.updateStepInfo(
+                    '🌟 Bước Cuối: Sẵn Sàng Cho Phép Màu!',
+                    'Hoàn hảo! Bạn đã hoàn thành 3 lần chọn. Bây giờ tôi sẽ tiết lộ biểu tượng bí mật của bạn!'
+                );
+            }
+
+            performMagic() {
+                if (this.isAnimating) return;
+                this.isAnimating = true;
+
+                document.getElementById('step-info').classList.add('hidden');
+                document.getElementById('reveal-btn').classList.add('hidden');
+                document.getElementById('magic-reveal').classList.remove('hidden');
+                
+                const delay = this.animationsDisabled ? 1000 : 3000;
+                
+                setTimeout(() => {
+                    const magicSymbol = this.cards[10];
+                    
+                    document.getElementById('magic-reveal').classList.add('hidden');
+                    document.getElementById('final-reveal').classList.remove('hidden');
+                    
+                    this.displayRevealedSymbol(magicSymbol);
+                    this.isAnimating = false;
+                    this.updateDebugPanel();
+                }, delay);
+            }
+
+            displayRevealedSymbol(symbol) {
+                const revealedSymbolElement = document.getElementById('revealed-symbol');
+                revealedSymbolElement.className = `revealed-symbol type-${symbol.category}`;
+                revealedSymbolElement.textContent = symbol.symbol;
+                
+                if ('vibrate' in navigator) {
+                    navigator.vibrate([100, 50, 100]);
+                }
+                
+                setTimeout(() => {
+                    this.showNotification('🎉 Phép màu thành công!', 'success');
+                }, 500);
+            }
+
+            updateStepInfo(title, description) {
+                const stepInfo = document.getElementById('step-info');
+                stepInfo.innerHTML = `
+                    <h2 class="step-title">${title}</h2>
+                    <div class="step-description">${description}</div>
+                `;
+                stepInfo.classList.remove('hidden');
+                if (!this.animationsDisabled) {
+                    stepInfo.classList.add('fade-in');
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                // Simple notification for performance
+                if (window.confirm) {
+                    setTimeout(() => alert(message), 100);
+                } else {
+                    console.log(message);
+                }
+            }
+
+            updateDebugPanel() {
+                if (!this.DEBUG) return;
+                
+                try {
+                    document.getElementById('debug-round').textContent = this.currentRound;
+                    document.getElementById('debug-selected').textContent = JSON.stringify(this.selectedPiles);
+                    document.getElementById('debug-magic').textContent = '10';
+                } catch (error) {
+                    console.warn('Debug update error:', error);
+                }
+            }
+
+            addEventListeners() {
+                // Debounced resize handler
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        this.createOptimizedParticles();
+                    }, 250);
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const startBtn = document.getElementById('start-btn');
+                        const nextBtn = document.getElementById('next-btn');
+                        const revealBtn = document.getElementById('reveal-btn');
+                        
+                        if (!startBtn.classList.contains('hidden')) {
+                            this.startGame();
+                        } else if (!nextBtn.classList.contains('hidden') && !nextBtn.disabled) {
+                            this.nextRound();
+                        } else if (!revealBtn.classList.contains('hidden')) {
+                            this.performMagic();
+                        }
+                    }
+                    
+                    if (['1', '2', '3'].includes(e.key) && !document.getElementById('piles-container').classList.contains('hidden')) {
+                        this.selectPile(parseInt(e.key) - 1);
+                    }
+                });
+
+                // Visibility change handler
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden && !this.animationsDisabled) {
+                        document.body.style.animationPlayState = 'paused';
+                    } else if (!this.animationsDisabled) {
+                        document.body.style.animationPlayState = 'running';
+                    }
+                });
+            }
+
+            toggleDebug() {
+                this.DEBUG = !this.DEBUG;
+                const debugPanel = document.getElementById('debug-panel');
+                if (this.DEBUG) {
+                    debugPanel.classList.add('show');
+                    this.updateDebugPanel();
+                } else {
+                    debugPanel.classList.remove('show');
+                }
+            }
+        }
+
+        // Global functions
+        let magicTrick;
+
+        function startGame() {
+            if (magicTrick) magicTrick.startGame();
+        }
+
+        function nextRound() {
+            if (magicTrick) magicTrick.nextRound();
+        }
+
+        function performMagic() {
+            if (magicTrick) magicTrick.performMagic();
+        }
+
+        function restartGame() {
+            location.reload();
+        }
+
+        function toggleDebug() {
+            if (magicTrick) magicTrick.toggleDebug();
+        }
+
+        function togglePerformancePanel() {
+            const panel = document.getElementById('performance-panel');
+            panel.classList.toggle('show');
+        }
+
+        function toggleParticles() {
+            const checkbox = document.getElementById('disable-particles');
+            magicTrick.particlesDisabled = checkbox.checked;
+            magicTrick.createOptimizedParticles();
+        }
+
+        function toggleAnimations() {
+            const checkbox = document.getElementById('disable-animations');
+            magicTrick.animationsDisabled = checkbox.checked;
+            
+            if (checkbox.checked) {
+                document.body.style.setProperty('--animation-duration', '0s');
+            } else {
+                document.body.style.removeProperty('--animation-duration');
+            }
+        }
+
+        function toggleLowQuality() {
+            const checkbox = document.getElementById('low-quality');
+            magicTrick.isLowPerformance = checkbox.checked;
+            
+            if (checkbox.checked) {
+                document.body.classList.add('low-performance');
+                magicTrick.particlesDisabled = true;
+            } else {
+                document.body.classList.remove('low-performance');
+                magicTrick.particlesDisabled = false;
+            }
+            
+            magicTrick.createOptimizedParticles();
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', function() {
+            try {
+                magicTrick = new OptimizedMagicTrick();
+            } catch (error) {
+                console.error('Initialization error:', error);
+                document.body.innerHTML = '<div style="text-align: center; padding: 50px; color: white;">Đã xảy ra lỗi. Vui lòng tải lại trang.</div>';
+            }
+        });
+
+        // Error handling
+        window.addEventListener('error', function(e) {
+            console.error('Runtime error:', e.error);
+        });
+
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Promise rejection:', e.reason);
+        });
+    </script>
+</body>
+</html>
